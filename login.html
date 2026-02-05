@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenJournal - Sign In</title>
+    <link rel="stylesheet" href="frontend.css">
+    <script src="imp2.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #F4F2FA 0%, #E8E5F5 50%, #DCD8EE 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Elements */
+        .ambient-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+            animation: breathe 20s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            50% { transform: translate(30px, -30px) scale(1.1); opacity: 0.5; }
+        }
+
+        .circle-1 { 
+            width: 400px; 
+            height: 400px; 
+            background: linear-gradient(135deg, #9B8AE6, #6B5CA5);
+            top: -150px; 
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .circle-2 { 
+            width: 500px; 
+            height: 500px; 
+            background: linear-gradient(135deg, #3A4A6B, #2E3A59);
+            bottom: -200px; 
+            left: -150px;
+            animation-delay: 5s;
+        }
+
+        .circle-3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8B7BC5, #6B5CA5);
+            top: 40%;
+            left: -100px;
+            animation-delay: 10s;
+        }
+
+        /* Card Styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid rgba(107, 92, 165, 0.15);
+            box-shadow: 0 20px 60px rgba(107, 92, 165, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .zen-title {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E5E3EE;
+            background: rgba(255, 255, 255, 0.7);
+            color: #1F2430;
+        }
+
+        .input-field:focus {
+            border-color: #6B5CA5;
+            box-shadow: 0 0 0 4px rgba(107, 92, 165, 0.15);
+            outline: none;
+            background: white;
+        }
+
+        .input-field::placeholder {
+            color: #9898AB;
+            font-weight: 300;
+        }
+
+        /* Button Styling */
+        .btn-zen {
+            background: linear-gradient(135deg, #6B5CA5 0%, #2E3A59 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(107, 92, 165, 0.3);
+        }
+
+        .btn-zen:hover {
+            background: linear-gradient(135deg, #5A4B94 0%, #2E3A59 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107, 92, 165, 0.4);
+        }
+
+        .btn-zen:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(107, 92, 165, 0.3);
+        }
+
+        /* Logo Animation */
+        .logo-icon {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Link Styling */
+        a {
+            color: #6B5CA5;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        a:hover {
+            color: #5A4B94;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #6B5CA5;
+            transition: width 0.3s ease;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* Checkbox Custom */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #E5E3EE;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        input[type="checkbox"]:checked {
+            background: #6B5CA5;
+            border-color: #6B5CA5;
+            box-shadow: 0 0 8px rgba(107, 92, 165, 0.3);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Message Box */
+        #messageBox {
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fade In Animation for Content */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stagger Animation for Form Elements */
+        .fade-in:nth-child(1) { animation-delay: 0.1s; opacity: 0; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; opacity: 0; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; opacity: 0; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; opacity: 0; }
+        .fade-in:nth-child(5) { animation-delay: 0.5s; opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Elements -->
+    <div class="ambient-circle circle-1"></div>
+    <div class="ambient-circle circle-2"></div>
+    <div class="ambient-circle circle-3"></div>
+
+    <div class="w-full max-w-md p-6 relative z-20">
+        <div class="glass-card rounded-[2rem] p-8 md:p-12">
+            
+            <!-- Logo/Header -->
+            <div class="text-center mb-12 fade-in">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#6B5CA5]/20 to-[#9B8AE6]/10 rounded-full mb-6 logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#6B5CA5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                    </svg>
+                </div>
+                <h1 class="zen-title text-4xl text-[#1F2430] mb-3">ZenJournal</h1>
+                <p class="text-[#6B6B82] font-light text-sm tracking-wide">Your quiet corner for mindful reflection</p>
+            </div>
+
+            <!-- Form -->
+            <form id="loginForm" class="space-y-6">
+                <div class="fade-in">
+                    <label class="block text-xs font-medium text-[#6B6B82] mb-2 ml-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" placeholder="name@example.com" class="input-field w-full px-5 py-3.5 rounded-xl text-[15px]" required>
+                </div>
+
+                <div class="fade-in">
+                    <div class="flex justify-between items-center mb-2 ml-1">
+                        <label class="block text-xs font-medium text-[#6B6B82] uppercase tracking-wider">Password</label>
+                        <a href="#" class="text-xs font-medium">Forgot password?</a>
+                    </div>
+                    <input type="password" placeholder="Enter your password" class="input-field w-full px-5 py-3.5 rounded-xl text-[15px]" required>
+                </div>
+
+                <div class="flex items-center ml-1 fade-in">
+                    <input type="checkbox" id="remember" class="mr-3">
+                    <label for="remember" class="text-sm text-[#6B6B82] font-light">Stay signed in</label>
+                </div>
+
+                <button type="submit" class="btn-zen w-full text-white font-medium py-4 rounded-xl text-[15px] tracking-wide fade-in">
+                    Enter Your Sanctuary
+                </button>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="mt-10 text-center border-t border-[#ECEAF5] pt-8 fade-in">
+                <p class="text-sm text-[#6B6B82] font-light">
+                    New to ZenJournal?
+                    <a href="register_page.html" class="font-medium ml-1">Create your space</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- System Message Box -->
+        <div id="messageBox" class="hidden mt-6 p-4 rounded-xl text-center text-sm font-medium"></div>
+        
+        <p class="text-center text-[#9898AB] text-xs mt-8 font-light">
+            &copy; 2024 ZenJournal. Crafted with intention.
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('messageBox');
+            msg.textContent = "Welcome back. Entering your sanctuary...";
+            msg.className = "mt-6 p-4 rounded-xl text-center text-sm font-medium bg-[#6B5CA5]/10 text-[#2E3A59] block border border-[#6B5CA5]/20";
+            msg.style.boxShadow = "0 0 12px rgba(107, 92, 165, 0.15)";
+            
+            // Peaceful transition to main page
+            setTimeout(() => {
+                let a = document.createElement('a');
+                a.setAttribute("href", "/index.html");
+                document.body.appendChild(a);        
+                a.click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

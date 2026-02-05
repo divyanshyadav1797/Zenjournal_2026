@@ -1,0 +1,85 @@
+#dates-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 40;
+}
+
+/* When sidebar is open */
+#dates-sidebar.sidebar-open {
+    transform: translateX(0);
+}
+
+/* On large screens, show sidebar by default if desired */
+@media (min-width: 1024px) {
+    #dates-sidebar {
+        position: relative;
+        transform: translateX(0);
+    }
+    
+    /* Optional: Still allow toggle on large screens */
+    #dates-sidebar:not(.sidebar-open) {
+        transform: translateX(100%);
+    }
+}
+
+/* Button active state with lavender glow */
+button.active-highlight {
+    background: linear-gradient(135deg, rgba(107, 92, 165, 0.15) 0%, rgba(107, 92, 165, 0.08) 100%) !important;
+    border-color: #6B5CA5 !important;
+    color: #6B5CA5 !important;
+    box-shadow: 0 0 12px rgba(107, 92, 165, 0.3) !important;
+}
+
+.dark button.active-highlight {
+    background: linear-gradient(135deg, rgba(155, 138, 230, 0.2) 0%, rgba(155, 138, 230, 0.1) 100%) !important;
+    border-color: #9B8AE6 !important;
+    color: #9B8AE6 !important;
+    box-shadow: 0 0 12px rgba(155, 138, 230, 0.35) !important;
+}
+
+/* Overlay for mobile when sidebar is open (optional) */
+#dates-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(31, 36, 48, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 35;
+}
+
+#dates-sidebar-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Smooth slide animation for sidebar content */
+#dates-sidebar > * {
+    transition: opacity 0.3s ease;
+}
+
+#dates-sidebar:not(.sidebar-open) > * {
+    opacity: 0;
+}
+
+#dates-sidebar.sidebar-open > * {
+    opacity: 1;
+}
+
+/* Mobile specific styles */
+@media (max-width: 1023px) {
+    #dates-sidebar {
+        width: 90%;
+        max-width: 400px;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dark #dates-sidebar {
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
+    }
+}

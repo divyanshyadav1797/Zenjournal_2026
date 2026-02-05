@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenJournal - Your Sanctuary</title>
+    <link rel="stylesheet" href="frontend.css">
+    <link rel="stylesheet" href="sidebar-animation.css">
+    <script src="Heart.js"></script>
+    <script src="Imp.js"></script>
+    <script src="imp2.js"></script>
+    <script src="sidebar-toggle.js" defer></script>
+    <script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    lavender: {
+                        50: '#F4F2FA',
+                        100: '#ECEAF5',
+                        200: '#E5E3EE',
+                        300: '#BBA9F0',
+                        400: '#9B8AE6',
+                        500: '#6B5CA5',
+                        600: '#5A4B94',
+                        700: '#493A83',
+                        800: '#2E3A59',
+                        900: '#1F2430',
+                    }
+                },
+                borderRadius: {
+                    '4xl': '2rem',
+                    '5xl': '2.5rem',
+                },
+                fontFamily: {
+                    sans: ['DM Sans', 'sans-serif'],
+                    serif: ['Crimson Pro', 'serif'],
+                }
+            }
+        }
+    }
+    </script>
+</head>
+<body class="overflow-hidden h-screen flex bg-[#F4F2FA] text-[#1F2430] dark:bg-[#121827] dark:text-[#E6E9F2] transition-colors duration-500">
+
+<!-- Left Sidebar -->
+<aside id="sidebar" class="hidden md:flex flex-col w-72 bg-white border-r border-[#F0EEF8] dark:bg-[#1A2030] dark:border-[#252E42] relative shrink-0 z-30 transition-all">
+    <button onclick="toggleSidebar()" class="absolute -right-3.5 top-12 bg-white dark:bg-[#222B3E] border border-[#E5E3EE] dark:border-[#2A3548] rounded-full p-1.5 shadow-md hover:shadow-lg z-40 transition-all group">
+        <i id="sidebar-toggle-icon" data-lucide="chevron-left" class="w-3.5 h-3.5 text-[#6B6B82] group-hover:text-[#6B5CA5] transition-colors"></i>
+    </button>
+
+    <!-- Logo Section -->
+    <div class="p-8 sidebar-header flex items-center gap-3 transition-all">
+        <div class="w-12 h-12 bg-gradient-to-br from-[#6B5CA5] to-[#9B8AE6] rounded-2xl flex items-center justify-center text-white shadow-lg" style="box-shadow: 0 4px 16px rgba(107, 92, 165, 0.3);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C12 2 17 6 17 11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11C7 6 12 2 12 2Z" fill="white"/>
+            </svg>
+        </div>
+        <h1 class="text-xl font-serif font-medium tracking-tight sidebar-text text-[#1F2430] dark:text-[#E6E9F2]">ZenJournal</h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-4 space-y-1.5">
+        <button onclick="currentDayFilter=null;switchTab('journal')" id="nav-journal" class="nav-item active w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all font-medium text-[#6B6B82] hover:bg-[#F4F2FA]/50 dark:hover:bg-[#222B3E]">
+            <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+            <span class="sidebar-text">Timeline</span>
+        </button>
+        <button onclick="switchTab('calendar')" id="nav-calendar" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all font-medium text-[#6B6B82] hover:bg-[#F4F2FA]/50 dark:hover:bg-[#222B3E]">
+            <i data-lucide="calendar-days" class="w-5 h-5 shrink-0"></i>
+            <span class="sidebar-text">Calendar</span>
+        </button>
+        <button onclick="switchTab('media')" id="nav-media" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all font-medium text-[#6B6B82] hover:bg-[#F4F2FA]/50 dark:hover:bg-[#222B3E]">
+            <i data-lucide="clapperboard" class="w-5 h-5 shrink-0"></i>
+            <span class="sidebar-text">Media Vault</span>
+        </button>
+        <button onclick="switchTab('todo')" id="nav-todo" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all font-medium text-[#6B6B82] hover:bg-[#F4F2FA]/50 dark:hover:bg-[#222B3E]">
+            <i data-lucide="list-checks" class="w-5 h-5 shrink-0"></i>
+            <span class="sidebar-text">Tasks</span>
+        </button>
+        <button onclick="switchTab('habit')" id="nav-habit" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all font-medium text-[#6B6B82] hover:bg-[#F4F2FA]/50 dark:hover:bg-[#222B3E]">
+            <i data-lucide="flame" class="w-5 h-5 shrink-0"></i>
+            <span class="sidebar-text">Habits</span>
+        </button>
+        <div class="py-4 sidebar-text">
+            <div class="h-px bg-[#ECEAF5] dark:bg-[#252E42] mx-4"></div>
+        </div>
+        <button onclick="switchTab('settings')" id="nav-settings" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all font-medium text-[#9898AB] hover:bg-[#F4F2FA]/50 dark:hover:bg-[#222B3E]">
+            <i data-lucide="settings-2" class="w-5 h-5 shrink-0"></i>
+            <span class="sidebar-text">Settings</span>
+        </button>
+    </nav>
+
+    <!-- User Section -->
+    <div class="p-6">
+        <div class="bg-[#F4F2FA]/70 dark:bg-[#222B3E] rounded-2xl p-4 flex items-center gap-3 user-section border border-[#E5E3EE] dark:border-[#2A3548] transition-all backdrop-blur-sm">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#6B5CA5] to-[#9B8AE6] p-0.5 shadow-md">
+                <div class="w-full h-full rounded-full bg-white dark:bg-[#222B3E] flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5 text-[#6B5CA5]"></i>
+                </div>
+            </div>
+            <div class="flex-1 min-w-0 sidebar-text">
+                <p class="text-xs font-semibold truncate text-[#1F2430] dark:text-[#E6E9F2]" id="user-display-name">Your Space</p>
+                <p class="text-[10px] text-[#9898AB] font-medium uppercase tracking-wide">Sanctuary</p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 relative">
+    <!-- Header -->
+    <header class="h-20 flex items-center justify-between px-6 md:px-12 glass border-b border-[#F0EEF8] dark:border-[#252E42] z-20 shrink-0 transition-all">
+        <div class="flex-1 max-w-xl">
+            <div class="relative group">
+                <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-[#9898AB] group-focus-within:text-[#6B5CA5] transition-colors w-4 h-4"></i>
+                <input type="text" id="search-input" placeholder="Search your memories..." class="w-full pl-12 pr-6 py-3 bg-white/60 dark:bg-[#222B3E] border border-transparent focus:border-[#6B5CA5]/30 rounded-2xl text-sm font-medium focus:ring-4 focus:ring-[#6B5CA5]/10 transition-all outline-none text-[#1F2430] dark:text-[#E6E9F2]">
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-3 ml-6">
+            <button onclick="toggleDatesSidebar()" class="p-2.5 bg-white dark:bg-[#222B3E] text-[#6B6B82] dark:text-[#A8ADBF] border border-[#E5E3EE] dark:border-[#2A3548] rounded-xl hover:border-[#6B5CA5]/40 hover:text-[#6B5CA5] transition-all active:scale-95" title="Important Dates">
+                <i data-lucide="calendar" class="w-4 h-4"></i></i>
+            </button>
+            <button onclick="toggleTheme()" class="p-2.5 bg-white dark:bg-[#222B3E] text-[#6B6B82] dark:text-[#A8ADBF] border border-[#E5E3EE] dark:border-[#2A3548] rounded-xl hover:border-[#6B5CA5]/40 hover:text-[#6B5CA5] transition-all active:scale-95" title="Toggle Theme">
+                <i id="theme-toggle-icon" data-lucide="moon" class="w-4 h-4"></i>
+            </button>
+            <button onclick="openEditor()" class="flex items-center gap-2 bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] hover:from-[#5A4B94] hover:to-[#2E3A59] text-white px-6 py-2.5 rounded-xl font-medium text-sm transition-all shadow-lg active:scale-95" style="box-shadow: 0 4px 16px rgba(107, 92, 165, 0.3);">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Write</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main View Container -->
+    <div id="view-container" class="flex-1 overflow-y-auto p-6 md:p-12 custom-scrollbar space-y-10">
+        
+        <!-- Timeline View -->
+        <div id="tab-journal" class="max-w-4xl mx-auto block view-transition">
+            <div class="mb-10">
+                <h2 class="text-4xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] tracking-tight">Timeline</h2>
+                <p class="text-[#9898AB] text-sm font-light mt-2" id="stats-counter">Your memories await</p>
+                <div id="filter-indicator-container"></div>
+            </div>
+            <div id="entries-grid" class="grid grid-cols-1 gap-6"></div>
+        </div>
+
+        <!-- Calendar View -->
+        <div id="tab-calendar" class="max-w-5xl mx-auto hidden view-transition">
+            <div class="bg-white dark:bg-[#1A2030] rounded-5xl p-10 premium-shadow border border-[#F0EEF8] dark:border-[#252E42]">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2]">History</h2>
+                    <div class="flex items-center gap-2 bg-[#F4F2FA] dark:bg-[#121827] p-1.5 rounded-xl border border-[#E5E3EE] dark:border-[#2A3548]">
+                        <button onclick="changeMonth(-1)" class="p-2 hover:bg-white/50 dark:hover:bg-[#222B3E] rounded-lg transition-colors">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <span id="calendar-month-year" class="font-semibold text-xs uppercase min-w-[140px] text-center">January 2024</span>
+                        <button onclick="changeMonth(1)" class="p-2 hover:bg-white/50 dark:hover:bg-[#222B3E] rounded-lg transition-colors">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-3"></div>
+            </div>
+        </div>
+
+        <!-- Media Gallery View -->
+        <div id="tab-media" class="max-w-6xl mx-auto hidden view-transition">
+            <div class="mb-10">
+                <h2 class="text-4xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] tracking-tight">Gallery</h2>
+            </div>
+            <div id="media-gallery" class="space-y-12 pb-20"></div>
+        </div>
+
+        <!-- Tasks View -->
+        <div id="tab-todo" class="max-w-4xl mx-auto hidden view-transition">
+            <div class="mb-10">
+                <h2 class="text-4xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] tracking-tight">Focus</h2>
+            </div>
+            <div class="bg-white dark:bg-[#1A2030] rounded-5xl p-8 border border-[#F0EEF8] dark:border-[#252E42] premium-shadow mb-10">
+                <div class="flex flex-col gap-6">
+                    <input type="text" id="todo-input" placeholder="What needs your attention today?" class="w-full text-xl font-medium bg-[#F4F2FA] dark:bg-[#121827] rounded-2xl px-6 py-4 focus:ring-4 focus:ring-[#6B5CA5]/10 outline-none text-[#1F2430] dark:text-[#E6E9F2] border border-[#E5E3EE] dark:border-[#2A3548]">
+                    <div class="flex justify-end">
+                        <button onclick="addTodo()" class="bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] text-white px-8 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all">Create Task</button>
+                    </div>
+                </div>
+            </div>
+            <div id="todo-list" class="space-y-3 pb-20"></div>
+        </div>
+
+        <!-- Habits View -->
+        <div id="tab-habit" class="max-w-4xl mx-auto hidden view-transition">
+            <div class="mb-10 flex items-center justify-between">
+                <div>
+                    <h2 class="text-4xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] tracking-tight">Routines</h2>
+                </div>
+                <button onclick="openHabitWizard()" class="bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] text-white px-5 py-2.5 rounded-xl font-medium shadow-md hover:shadow-lg transition-all">New Habit</button>
+            </div>
+            <div id="habit-checklist" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12"></div>
+            <div id="habit-progress-list" class="space-y-4 pb-20"></div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="tab-settings" class="max-w-3xl mx-auto hidden view-transition">
+            <h2 class="text-4xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] mb-10">Settings</h2>
+            <div class="space-y-6 pb-20">
+                <div id="categories-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10"></div>
+                <button onclick="exportData()" class="bg-[#2E3A59] dark:bg-[#3A4A6B] text-white px-6 py-4 rounded-2xl w-full font-medium shadow-md hover:shadow-lg transition-all">Export Data</button>
+                <button onclick="clearAllData()" class="text-red-600 dark:text-red-400 w-full py-4 font-medium border border-red-200 dark:border-red-900/30 rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/10 transition-all">Clear All Data</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Overlay for mobile sidebar (optional) -->
+<div id="dates-sidebar-overlay" onclick="toggleDatesSidebar()"></div>
+
+<!-- Right Sidebar: Important Dates -->
+<aside id="dates-sidebar" class="hidden flex-col w-80 bg-white border-l border-[#F0EEF8] dark:bg-[#1A2030] dark:border-[#252E42] shrink-0 z-30 transition-all">
+    <div class="p-8 border-b border-[#F0EEF8] dark:border-[#252E42]">
+        <h2 class="text-xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] flex items-center gap-2">
+            <i data-lucide="star" class="w-5 h-5 text-[#6B5CA5] fill-[#6B5CA5]"></i>
+            Important Dates
+        </h2>
+        <p class="text-[10px] text-[#9898AB] uppercase tracking-widest mt-1">Milestone Tracker</p>
+    </div>
+
+    <div class="p-6 space-y-4">
+        <div class="bg-[#F4F2FA]/60 dark:bg-[#222B3E] rounded-2xl p-5 border border-[#E5E3EE] dark:border-[#2A3548] shadow-sm backdrop-blur-sm">
+            <h3 class="text-[10px] font-bold text-[#6B5CA5] uppercase mb-3 tracking-widest">Add New Event</h3>
+            <input type="text" id="imp-date-title" placeholder="Event name" class="w-full bg-white dark:bg-[#121827] border border-[#E5E3EE] dark:border-[#2A3548] rounded-xl px-4 py-2.5 text-xs font-medium text-[#1F2430] dark:text-[#E6E9F2] outline-none focus:ring-2 focus:ring-[#6B5CA5]/20 mb-3">
+            <div class="flex items-center gap-2">
+                <input type="date" id="imp-date-value" class="flex-1 bg-white dark:bg-[#121827] border border-[#E5E3EE] dark:border-[#2A3548] rounded-xl px-4 py-2.5 text-[10px] font-medium outline-none text-[#6B6B82] dark:text-[#A8ADBF]">
+                <button onclick="storeImportantDate()" class="p-2.5 bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] text-white rounded-xl hover:shadow-lg transition-all shadow-md active:scale-90">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto custom-scrollbar px-6 pb-8 space-y-3" id="important-dates-list">
+        <!-- JS rendered items -->
+    </div>
+</aside>
+
+<!-- Editor Overlay -->
+<div id="editor-overlay" class="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 bg-[#1F2430]/60 dark:bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity">
+    <div class="w-full h-full md:h-auto md:max-w-5xl md:max-h-[95vh] bg-white dark:bg-[#1A2030] md:rounded-5xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform border border-[#F0EEF8] dark:border-[#252E42]">
+        
+        <!-- Editor Header -->
+        <div class="flex items-center justify-between px-8 py-4 border-b border-[#F0EEF8] dark:border-[#252E42] shrink-0">
+            <button onclick="closeEditor()" class="p-2 hover:bg-[#F4F2FA] dark:hover:bg-[#222B3E] rounded-xl text-[#9898AB] dark:text-[#6B7285] transition-colors">
+                <i data-lucide="chevron-left" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Formatting Toolbar -->
+            <div class="flex items-center gap-1 md:gap-2 px-3 py-1.5 bg-[#F4F2FA] dark:bg-[#121827] rounded-2xl border border-[#E5E3EE] dark:border-[#2A3548] mx-2 overflow-x-auto custom-scrollbar">
+                <button onclick="format('bold')" class="formatting-btn" title="Bold">
+                    <i data-lucide="bold" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="format('italic')" class="formatting-btn" title="Italic">
+                    <i data-lucide="italic" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="format('underline')" class="formatting-btn" title="Underline">
+                    <i data-lucide="underline" class="w-3.5 h-3.5"></i>
+                </button>
+                <div class="w-px h-4 bg-[#ECEAF5] dark:bg-[#2A3548] mx-1"></div>
+                <button onclick="format('insertUnorderedList')" class="formatting-btn" title="Bullet List">
+                    <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="format('insertOrderedList')" class="formatting-btn" title="Numbered List">
+                    <i data-lucide="list-ordered" class="w-3.5 h-3.5"></i>
+                </button>
+                <div class="w-px h-4 bg-[#ECEAF5] dark:bg-[#2A3548] mx-1"></div>
+                <button onclick="format('formatBlock', 'blockquote')" class="formatting-btn" title="Important Point">
+                    <i data-lucide="star" class="w-3.5 h-3.5"></i>
+                </button>
+                <div class="w-px h-4 bg-[#ECEAF5] dark:bg-[#2A3548] mx-1"></div>
+                <select onchange="format('fontSize', this.value)" class="bg-transparent border-none text-[10px] font-bold uppercase outline-none text-[#6B6B82] cursor-pointer">
+                    <option value="3">Medium</option>
+                    <option value="2">Small</option>
+                    <option value="5">Large</option>
+                    <option value="7">XLarge</option>
+                </select>
+            </div>
+
+            <button onclick="saveEntry()" id="save-button" class="bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] text-white px-8 py-2.5 rounded-xl font-medium text-sm shadow-lg active:scale-95 transition-all shrink-0">Save</button>
+        </div>
+
+        <!-- Entry Type & Mood -->
+        <div class="flex items-center gap-4 px-10 py-3 bg-[#FEFEFF] dark:bg-[#121827] border-b border-[#F0EEF8] dark:border-[#252E42]">
+            <select id="entry-type" class="bg-white dark:bg-[#222B3E] border border-[#E5E3EE] dark:border-[#2A3548] rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase focus:ring-2 focus:ring-[#6B5CA5]/20 outline-none text-[#1F2430] dark:text-[#E6E9F2]"></select>
+            <div id="mood-selector" class="flex gap-1.5 p-1 bg-white dark:bg-[#222B3E] rounded-lg border border-[#E5E3EE] dark:border-[#2A3548]">
+                <button data-mood="happy" onclick="setMood('happy')" class="p-1.5 rounded-md hover:bg-[#F4F2FA] dark:hover:bg-[#1A2030] transition-all">
+                    <i data-lucide="smile" class="text-green-600 w-4 h-4"></i>
+                </button>
+                <button data-mood="neutral" onclick="setMood('neutral')" class="p-1.5 rounded-md hover:bg-[#F4F2FA] dark:hover:bg-[#1A2030] transition-all">
+                    <i data-lucide="meh" class="text-[#9898AB] w-4 h-4"></i>
+                </button>
+                <button data-mood="sad" onclick="setMood('sad')" class="p-1.5 rounded-md hover:bg-[#F4F2FA] dark:hover:bg-[#1A2030] transition-all">
+                    <i data-lucide="frown" class="text-red-500 w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Editor Content Area -->
+        <div class="flex-1 p-10 md:p-16 overflow-y-auto custom-scrollbar">
+            <input type="text" id="entry-title" placeholder="Give this moment a title..." class="w-full text-4xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] bg-transparent border-none focus:ring-0 mb-8 p-0 outline-none placeholder:text-[#9898AB]">
+            <div id="entry-content" contenteditable="true" data-placeholder="Share your thoughts..." class="w-full text-lg leading-relaxed text-[#6B6B82] dark:text-[#A8ADBF] bg-transparent border-none focus:ring-0 min-h-[300px] p-0 font-light mb-10 outline-none"></div>
+            <div id="editor-image-preview" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+        </div>
+
+        <!-- Editor Footer -->
+        <div class="px-8 py-5 bg-[#FEFEFF] dark:bg-[#121827] border-t border-[#F0EEF8] dark:border-[#252E42] flex flex-wrap items-center justify-between gap-4 shrink-0">
+            <div class="flex items-center gap-3">
+                <label class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-[#222B3E] border border-[#E5E3EE] dark:border-[#2A3548] rounded-xl cursor-pointer hover:shadow-md transition-all font-medium text-[10px] uppercase text-[#6B6B82] dark:text-[#A8ADBF]">
+                    <i data-lucide="paperclip" class="w-3.5 h-3.5"></i> Attach Files
+                    <input type="file" id="image-upload" multiple accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" class="hidden" onchange="handleMediaUpload(this)">
+                </label>
+                <div class="relative flex items-center bg-white dark:bg-[#222B3E] border border-[#E5E3EE] dark:border-[#2A3548] rounded-xl px-4 py-2 text-[#6B6B82] dark:text-[#A8ADBF]">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 mr-2 shrink-0"></i>
+                    <input type="text" id="entry-location" placeholder="Add location..." class="bg-transparent border-none outline-none text-[10px] font-medium uppercase w-24 md:w-32">
+                </div>
+            </div>
+            <input type="date" id="entry-date-input" class="bg-transparent border-none outline-none font-medium text-[10px] text-[#6B6B82] dark:text-[#A8ADBF]">
+        </div>
+    </div>
+</div>
+
+<!-- Habit Wizard Modal -->
+<div id="habit-wizard" class="fixed inset-0 z-[120] flex items-center justify-center p-6 bg-[#1F2430]/80 backdrop-blur-md hidden opacity-0 transition-opacity">
+    <div class="w-full max-w-lg bg-white dark:bg-[#1A2030] rounded-5xl shadow-2xl p-10 transform scale-95 transition-transform duration-300 border border-[#F0EEF8] dark:border-[#252E42]">
+        <div id="wizard-step-1">
+            <h3 class="text-2xl font-serif font-medium text-[#1F2430] dark:text-[#E6E9F2] mb-8">Create New Ritual</h3>
+            <input type="text" id="wiz-habit-name" placeholder="Habit name" class="w-full bg-[#F4F2FA] dark:bg-[#121827] border border-[#E5E3EE] dark:border-[#2A3548] rounded-2xl px-6 py-4 font-medium outline-none text-lg mb-4">
+            <input type="text" id="wiz-habit-icon" placeholder="✨" class="w-full bg-[#F4F2FA] dark:bg-[#121827] border border-[#E5E3EE] dark:border-[#2A3548] rounded-2xl px-6 py-4 font-medium outline-none text-center text-3xl mb-8">
+            <div class="flex justify-end gap-3">
+                <button onclick="closeHabitWizard()" class="px-6 py-3 rounded-xl font-medium text-[#6B6B82] hover:bg-[#F4F2FA] dark:hover:bg-[#222B3E] transition-all">Cancel</button>
+                <button onclick="goToWizardStep2()" class="bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] text-white px-8 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all">Next</button>
+            </div>
+        </div>
+        <div id="wizard-step-2" class="hidden">
+            <h3 class="text-2xl font-serif font-medium mb-10">Tracking Type</h3>
+            <button onclick="selectHabitType('yesno')" id="btn-habit-type-yesno" class="habit-type-btn w-full p-6 rounded-2xl border-2 border-[#E5E3EE] dark:border-[#2A3548] flex justify-between items-center active hover:bg-[#F4F2FA] dark:hover:bg-[#222B3E] transition-all">
+                <span class="font-medium">Daily Confirmation</span>
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+            </button>
+            <div class="flex justify-between mt-10">
+                <button onclick="goToWizardStep1()" class="px-6 py-3 rounded-xl font-medium text-[#6B6B82] hover:bg-[#F4F2FA] dark:hover:bg-[#222B3E] transition-all">Back</button>
+                <button onclick="completeHabitWizard()" class="bg-gradient-to-br from-[#6B5CA5] to-[#2E3A59] text-white px-8 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all">Save Habit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Lightbox -->
+<div id="image-lightbox" class="fixed inset-0 z-[300] bg-black/95 flex items-center justify-center p-6 hidden opacity-0 transition-opacity duration-400" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" class="max-w-full max-h-full rounded-2xl shadow-2xl transform scale-95 transition-transform duration-400">
+</div>
+
+</body>
+</html>

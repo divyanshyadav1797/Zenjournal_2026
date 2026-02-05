@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenJournal - Begin Your Journey</title>
+    <link rel="stylesheet" href="frontend.css">
+    <script src="imp2.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #F4F2FA 0%, #E8E5F5 50%, #DCD8EE 100%);
+            color: #1F2430;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .zen-title {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        /* Ambient Background Elements */
+        .ambient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            opacity: 0.35;
+            animation: breathe 25s infinite alternate ease-in-out;
+        }
+
+        @keyframes breathe {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, -70px) scale(1.15); }
+        }
+
+        .blob-1 {
+            width: 550px;
+            height: 550px;
+            background: linear-gradient(135deg, #9B8AE6, #6B5CA5);
+            top: -200px;
+            left: -100px;
+        }
+
+        .blob-2 {
+            width: 450px;
+            height: 450px;
+            background: linear-gradient(135deg, #3A4A6B, #2E3A59);
+            bottom: -150px;
+            right: -50px;
+            animation-delay: 8s;
+        }
+
+        .blob-3 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #8B7BC5, #6B5CA5);
+            top: 50%;
+            right: -100px;
+            animation-delay: 15s;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid rgba(107, 92, 165, 0.15);
+            box-shadow: 0 25px 60px rgba(107, 92, 165, 0.2);
+        }
+
+        /* Input Styling */
+        .input-zen {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid #E5E3EE;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #1F2430;
+        }
+
+        .input-zen:focus {
+            background: white;
+            border-color: #6B5CA5;
+            box-shadow: 0 0 0 4px rgba(107, 92, 165, 0.15);
+            outline: none;
+        }
+
+        .input-zen::placeholder {
+            color: #9898AB;
+            font-weight: 300;
+        }
+
+        /* Button Styling */
+        .btn-begin {
+            background: linear-gradient(135deg, #6B5CA5 0%, #2E3A59 100%);
+            box-shadow: 0 6px 20px rgba(107, 92, 165, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-begin:hover:not(:disabled) {
+            background: linear-gradient(135deg, #5A4B94 0%, #2E3A59 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107, 92, 165, 0.4);
+        }
+
+        .btn-begin:active {
+            transform: translateY(0);
+        }
+
+        .btn-begin:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .zen-spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Logo Animation */
+        .logo-icon {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Fade Out Transition */
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.97);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Success Overlay */
+        #successOverlay {
+            backdrop-filter: blur(10px);
+        }
+
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stagger Animations */
+        .fade-in:nth-child(1) { animation-delay: 0.1s; opacity: 0; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; opacity: 0; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; opacity: 0; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; opacity: 0; }
+        .fade-in:nth-child(5) { animation-delay: 0.5s; opacity: 0; }
+
+        /* Link Styling */
+        a {
+            color: #6B5CA5;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        a:hover {
+            color: #5A4B94;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #6B5CA5;
+            transition: width 0.3s ease;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* Bounce Animation */
+        .bounce-gentle {
+            animation: bounceGentle 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceGentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Blobs -->
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+
+    <div id="mainContainer" class="w-full max-w-xl px-6 py-12 relative transition-all duration-700 z-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-12 fade-in">
+            <div class="inline-flex items-center gap-3 mb-6 logo-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#6B5CA5" opacity="0.2"/>
+                    <path d="M12 2C12 2 17 6 17 11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11C7 6 12 2 12 2Z" fill="#6B5CA5"/>
+                </svg>
+                <span class="zen-title text-3xl tracking-wide">ZenJournal</span>
+            </div>
+            <h2 class="zen-title text-4xl mb-3 text-[#1F2430]">Begin Your Journey</h2>
+            <p class="text-[#6B6B82] font-light text-sm tracking-wide">Create a space for mindful reflection and growth</p>
+        </div>
+
+        <!-- Registration Card -->
+        <div class="glass-card rounded-[2.5rem] p-8 md:p-12">
+            <form id="registerForm" class="space-y-6">
+                <!-- Name Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+                    <div>
+                        <label class="block text-xs font-medium text-[#6B6B82] mb-2 ml-1 uppercase tracking-wider">First Name</label>
+                        <input type="text" placeholder="Avery" class="input-zen w-full px-5 py-4 rounded-xl text-[15px]" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-[#6B6B82] mb-2 ml-1 uppercase tracking-wider">Last Name</label>
+                        <input type="text" placeholder="Chen" class="input-zen w-full px-5 py-4 rounded-xl text-[15px]" required>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="fade-in">
+                    <label class="block text-xs font-medium text-[#6B6B82] mb-2 ml-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" placeholder="avery@zen.com" class="input-zen w-full px-5 py-4 rounded-xl text-[15px]" required>
+                </div>
+
+                <!-- Password -->
+                <div class="fade-in">
+                    <label class="block text-xs font-medium text-[#6B6B82] mb-2 ml-1 uppercase tracking-wider">Password</label>
+                    <input type="password" placeholder="Create a secure password" class="input-zen w-full px-5 py-4 rounded-xl text-[15px]" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4 fade-in">
+                    <button type="submit" id="submitBtn" class="btn-begin w-full py-5 rounded-xl text-white font-medium text-[16px] tracking-wide">
+                        <span id="btnText">Begin Your Practice</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Footer Link -->
+            <div class="mt-10 pt-8 border-t border-[#ECEAF5] text-center fade-in">
+                <p class="text-sm text-[#6B6B82] font-light">
+                    Already have a sanctuary? 
+                    <a href="login.html" class="font-medium ml-1">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Feedback Overlay -->
+    <div id="successOverlay" class="fixed inset-0 flex items-center justify-center bg-[#F4F2FA] z-50 hidden opacity-0 transition-opacity duration-1000">
+        <div class="text-center px-6">
+            <div class="mb-8 inline-block bounce-gentle">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#6B5CA5" opacity="0.2"/>
+                    <path d="M12 2C12 2 17 6 17 11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11C7 6 12 2 12 2Z" fill="#6B5CA5"/>
+                </svg>
+            </div>
+            <h2 class="zen-title text-4xl text-[#1F2430] mb-4">Welcome Home</h2>
+            <p class="text-[#6B6B82] text-lg font-light tracking-wide">Preparing your sanctuary...</p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const mainContainer = document.getElementById('mainContainer');
+        const successOverlay = document.getElementById('successOverlay');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 1. Visual feedback on button
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="zen-spinner"></span> Creating Your Space...';
+            
+            // 2. Simulate account creation
+            setTimeout(() => {
+                // 3. Fade out registration form
+                mainContainer.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    mainContainer.classList.add('hidden');
+                    
+                    // 4. Show success overlay
+                    successOverlay.classList.remove('hidden');
+                    setTimeout(() => {
+                        successOverlay.classList.add('opacity-100');
+                    }, 50);
+
+                    // 5. Redirect to main page
+                    setTimeout(() => {
+                        window.location.href = "/index.html"; 
+                    }, 2500);
+                }, 800);
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
