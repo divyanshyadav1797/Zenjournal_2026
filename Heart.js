@@ -338,8 +338,9 @@ const STORAGE_KEY = 'zenjournal_local_entries';
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
   });
   window.location.reload();
-    renderCategories();
+    window.renderCategories();
 }
+
 
 
 
